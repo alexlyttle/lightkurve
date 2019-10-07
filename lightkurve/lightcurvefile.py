@@ -38,7 +38,7 @@ class LightCurveFile(object):
         else:
             self.path = path
             self.hdu = pyfits.open(self.path, **kwargs)
-
+        
     def header(self, ext=0):
         """Header of the object at extension `ext`"""
         return self.hdu[ext].header
@@ -290,7 +290,9 @@ class KeplerLightCurveFile(LightCurveFile):
             self.targetid = None
 
     def __repr__(self):
-        return('KeplerLightCurveFile(ID: {})'.format(self.targetid))
+        rep = '{}(ID: {})\n'.format(self.__class__.__name__, self.targetid) +\
+              '\tProvides: {}'.format(', '.join(self._flux_types()))
+        return(rep)
 
     @property
     def astropy_time(self):
@@ -466,7 +468,9 @@ class TessLightCurveFile(LightCurveFile):
             self.targetid = None
 
     def __repr__(self):
-        return('TessLightCurveFile(TICID: {})'.format(self.targetid))
+        rep = '{}(TICID: {})\n'.format(self.__class__.__name__, self.targetid) +\
+              '\tProvides: {}'.format(', '.join(self._flux_types()))
+        return(rep)
 
     def get_lightcurve(self, flux_type, centroid_type='MOM_CENTR'):
         if centroid_type+"1" in self.hdu[1].data.columns.names:
